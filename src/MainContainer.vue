@@ -1,3 +1,10 @@
-<script setup></script>
+<script setup>
+import HeaderC from '@/components/HeaderC.vue'
+</script>
 
-<template></template>
+<template>
+  <header-c></header-c>
+  <v-main>
+    <router-view></router-view>
+  </v-main>
+</template>
