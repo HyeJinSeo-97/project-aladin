@@ -6,7 +6,7 @@
       </router-link>
 
       <v-sheet position="absolute" class="toolbar-actions">
-        <template v-for="action in TOOLBAR_ACTIONS" :key="action.key">
+        <template v-for="action in toolbarActions" :key="action.key">
           <template v-if="action.subList">
             <v-menu open-on-hover>
               <template v-slot:activator="{ props }">
@@ -35,7 +35,13 @@
             </v-menu>
           </template>
           <template v-else>
-            <v-btn min-width="fit-content" size="x-small" variant="plain" class="px-2">
+            <v-btn
+              min-width="fit-content"
+              size="x-small"
+              variant="plain"
+              class="px-2"
+              @click="onToolbarActionHandler(action.key)"
+            >
               {{ action.text }}
             </v-btn>
           </template>
@@ -154,13 +160,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { TOOLBAR_ACTIONS, MENUS, SUB_MENUS } from '@/config/header.js'
 import SearchC from '@/components/SearchC.vue'
 import AllCategoryC from '@/components/AllCategoryC.vue'
 import ContainerC from '@/components/ContainerC.vue'
+import { getToken, removeToken } from '@/utils/token.js'
+import { useRouter } from 'vue-router'
 
+// DATA
+const token = ref(getToken())
+const router = useRouter()
 const dialog = ref(false)
+const $alert = inject('$alert')
+
+// COMPUTED
+const toolbarActions = computed(() => {
+  return TOOLBAR_ACTIONS.filter(el => (token.value ? el.key !== 'login' : el.key !== 'logout'))
+})
+
+// METHODS
+const onToolbarActionHandler = key => {
+  switch (key) {
+    case 'login': {
+      router.push('/login')
+      break
+    }
+    case 'logout': {
+      $alert.confirm({
+        text: '로그아웃하시겠습니까?',
+        confirm: {
+          text: '로그아웃',
+          cb: () => {
+            removeToken()
+            token.value = getToken()
+          }
+        }
+      })
+      break
+    }
+    default:
+      break
+  }
+}
 </script>
 
 <style lang="scss">

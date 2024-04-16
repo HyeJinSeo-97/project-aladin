@@ -36,7 +36,7 @@ export default {
       text,
       title: TYPE[type] || '알림',
       confirm: { show: false },
-      deny: { ...deny, show: true }
+      deny: { show: true, text: '확인', ...deny }
     }
     self(options)
   }

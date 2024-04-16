@@ -14,6 +14,7 @@
               <text-field-c
                 v-model="fieldModels[field.key]"
                 variant="outlined"
+                :rules="field.rules"
                 :hide-details="false"
                 :append-icon="field.key === 'password' ? (showPwd ? 'mdi-eye' : 'mdi-eye-off') : ''"
                 :field-type="
@@ -39,6 +40,7 @@
 import { inject, reactive, ref } from 'vue'
 import TextFieldC from '@/components/global/TextFieldC.vue'
 import { useRouter } from 'vue-router'
+import { setToken } from '@/utils/token.js'
 
 // DATA
 const FIELDS = [
@@ -52,7 +54,10 @@ const FIELDS = [
     key: 'password',
     label: '비밀번호',
     type: 'password',
-    rules: [value => !!value || '필수 입력 항목입니다.']
+    rules: [
+      value => !!value || '필수 입력 항목입니다.',
+      value => (value && value.length >= 8) || '비밀번호는 8자리 이상이어야 합니다.'
+    ]
   }
 ]
 const form = ref()
@@ -72,7 +77,10 @@ const onLogin = async () => {
       text: '로그인하시겠습니까?',
       confirm: {
         text: '로그인',
-        cb: () => {
+        cb: async () => {
+          const token = btoa(JSON.stringify(fieldModels.password)) // 임의 토큰 생성
+          await setToken(token)
+
           router.push('/')
         }
       }
