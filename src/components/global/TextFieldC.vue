@@ -4,10 +4,14 @@
     :variant="variant"
     :placeholder="placeholder"
     :hide-details="hideDetails"
+    :type="fieldType"
+    :rules="rules"
     :append-inner-icon="appendInnerIcon"
     class="global-text-field"
   >
-    <slot></slot>
+    <template #message="{ message }">
+      <slot name="message" v-bind:message="message"></slot>
+    </template>
   </v-text-field>
 </template>
 
@@ -26,6 +30,14 @@ defineProps({
   hideDetails: {
     type: Boolean,
     default: true
+  },
+  fieldType: {
+    type: String,
+    default: 'text'
+  },
+  rules: {
+    type: Array,
+    default: () => [value => !!value || '필수 입력 항목입니다.']
   },
   placeholder: String,
   appendInnerIcon: String
