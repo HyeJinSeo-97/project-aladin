@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat density="compact">
+  <v-app-bar absolute flat density="compact">
     <container-c>
       <router-link to="/" class="d-inline-block">
         <v-img src="images/aladin_logo.jpg" alt="로고" width="100" />
@@ -75,7 +75,7 @@
     </template>
   </v-app-bar>
 
-  <v-app-bar flat color="primary" density="compact">
+  <v-app-bar absolute flat color="primary" density="compact">
     <container-c>
       <v-row align="center">
         <template v-if="$vuetify.display.smAndDown">
