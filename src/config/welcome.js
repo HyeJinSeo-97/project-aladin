@@ -16,19 +16,11 @@ const MAIN_BANNERS = [
     text: '신간 소개'
   },
   {
-    key: 'best',
-    text: '베스트 예감'
+    key: 'blog',
+    text: '블로거의 선택'
   },
   {
-    key: 'issue',
-    text: '화제의 책'
-  },
-  {
-    key: 'goods',
-    text: '이벤트 굿즈'
-  },
-  {
-    key: 'new',
+    key: 'standout',
     text: '눈에 띄는 새책'
   },
   {
