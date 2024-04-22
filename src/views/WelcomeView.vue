@@ -1,186 +1,394 @@
 <template>
-  <v-sheet rounded="lg" class="d-flex flex-column ga-6">
-    <v-sheet class="carousel-container">
-      <carousel-c
-        min-height="45vh"
-        :auto-play="0"
-        :current-slide="currentSlide"
-        :items-to-show="1"
-        :slides="MAIN_BANNERS"
-        @slide-start="onSlideHandler"
-      >
-        <template v-for="main in MAIN_BANNERS" :key="main.key" v-slot:[main.key]>
-          <v-sheet class="banner-container" :class="`banner-${main.key}`">
-            <template v-for="banner in itemTypes[main.key].item?.slice(0, 4)" :key="banner.key">
-              <template v-if="main.key === 'event'">
-                <v-card width="25%">
-                  <router-link to="">
-                    <v-img :src="`images/${banner.img}`" alt="배너" />
-                  </router-link>
-                </v-card>
+  <container-c>
+    <v-sheet rounded="lg" class="d-flex flex-column ga-10">
+      <!-- 메인 배너 -->
+      <v-sheet class="my-border">
+        <carousel-c
+          min-height="45vh"
+          :auto-play="3000"
+          :current-slide="currentSlide"
+          :items-to-show="1"
+          :slides="MAIN_BANNERS"
+          @slide-start="onSlideHandler"
+        >
+          <template v-for="main in MAIN_BANNERS" :key="main.key" v-slot:[main.key]>
+            <v-sheet class="banner-container" :class="`banner-${main.key}`">
+              <template v-for="banner in itemTypes[main.key].item?.slice(0, 4)" :key="banner.key">
+                <template v-if="main.key === 'event'">
+                  <v-card width="25%" class="d-flex flex-column justify-center">
+                    <router-link to="">
+                      <v-img :src="`images/${banner.img}`" alt="배너" />
+                    </router-link>
+                  </v-card>
+                </template>
+                <template v-else>
+                  <book-intro-c
+                    :book="banner"
+                    thumbnail-width="200"
+                    thumbnail-height="280"
+                    class="w-25"
+                  ></book-intro-c>
+                </template>
               </template>
-              <template v-else>
-                <book-intro-c :banner="banner" class="banner-item"></book-intro-c>
-              </template>
-            </template>
-          </v-sheet>
-        </template>
-
-        <template #pagination>
-          <v-sheet>
-            <v-tabs grow hide-slider density="compact">
-              <v-tab
-                v-for="(banner, bIndex) in MAIN_BANNERS"
-                :key="banner.key"
-                variant="text"
-                size="small"
-                class="bg-blue-lighten-5"
-                :class="{ 'bg-blue-lighten-4': bIndex === currentSlide }"
-                @click="currentSlide = bIndex"
-              >
-                {{ banner.text }}
-              </v-tab>
-            </v-tabs>
-          </v-sheet>
-        </template>
-      </carousel-c>
-    </v-sheet>
-
-    <v-sheet class="d-flex ga-4" min-height="35vh">
-      <v-card width="70%">
-        <v-tabs v-model="activeTab" hide-slider density="compact">
-          <v-tab
-            v-for="tab in MAIN_TABS"
-            :key="tab.key"
-            size="small"
-            class=""
-            selected-class="bg-blue-lighten-5"
-          >
-            {{ tab.text }}
-          </v-tab>
-        </v-tabs>
-
-        <v-window v-model="activeTab" class="w-100" style="width: 65%">
-          <v-window-item v-for="tab in MAIN_TABS" :key="tab.key" :value="tab.key">
-            <v-sheet>
-              {{ tab.text }}
-            </v-sheet>
-          </v-window-item>
-        </v-window>
-      </v-card>
-
-      <v-card width="30%">
-        <carousel-c min-height="35vh" :slides="WAD_BANNER" :auto-play="0">
-          <template v-for="banner in WAD_BANNER" :key="banner.key" v-slot:[banner.key]>
-            <v-sheet width="100%">
-              <router-link to="">
-                <v-img :src="`/images/${banner.img}`" alt="배너" max-height="35vh" />
-              </router-link>
             </v-sheet>
           </template>
 
-          <template #pagination></template>
+          <template #pagination>
+            <v-sheet>
+              <v-tabs grow hide-slider density="compact">
+                <v-tab
+                  v-for="(banner, bIndex) in MAIN_BANNERS"
+                  :key="banner.key"
+                  variant="text"
+                  size="small"
+                  class="bg-blue-lighten-5"
+                  :class="{ 'bg-blue-lighten-4': bIndex === currentSlide }"
+                  @click="currentSlide = bIndex"
+                >
+                  {{ banner.text }}
+                </v-tab>
+              </v-tabs>
+            </v-sheet>
+          </template>
         </carousel-c>
-      </v-card>
-    </v-sheet>
+      </v-sheet>
+      <!-- //메인 배너 -->
 
-    <v-sheet>
-      <section-c title="어제 베스트셀러 TOP 10">
-        <template #text>
-          <v-card height="40vh" class="d-flex flex-column flex-wrap ga-3">
-            <template v-for="n in 10" :key="n">
-              <book-rank-c :rank="n" title="책 제목" author="작가이름"></book-rank-c>
+      <v-sheet class="d-flex ga-4" min-height="35vh">
+        <!-- 탭 -->
+        <v-card flat width="70%" class="">
+          <v-tabs bg-color="primary" v-model="activeTab" hide-slider density="compact">
+            <v-tab
+              v-for="tab in MAIN_TABS"
+              :key="tab.key"
+              size="small"
+              class=""
+              selected-class="bg-primary-darken-2"
+              @click="onTapClickHandler(tab)"
+            >
+              {{ tab.text }}
+            </v-tab>
+          </v-tabs>
+
+          <v-window
+            v-model="activeTab"
+            class="w-100 rounded-t-0 my-border tab-window"
+            style="width: 65%"
+          >
+            <v-window-item v-for="tab in MAIN_TABS" :key="tab.key" :value="tab.key">
+              <v-sheet class="my-3">
+                <template v-if="tab.key !== 'goods'">
+                  <carousel-c
+                    :items-to-show="4"
+                    :auto-play="0"
+                    :wrap-around="false"
+                    :slides="itemTypes[tab.key].item"
+                  >
+                    <template #slide="{ slide }">
+                      <book-intro-c
+                        :book="slide"
+                        thumbnail-width="150"
+                        thumbnail-height="220"
+                        class=""
+                      ></book-intro-c>
+                    </template>
+
+                    <template #pagination></template>
+                  </carousel-c>
+                </template>
+                <template v-else>
+                  <v-sheet class="d-flex ga-10 px-5">
+                    <v-card
+                      v-for="ad in itemTypes[tab.key].item"
+                      :key="ad.key"
+                      flat
+                      class="d-flex flex-column align-center justify-center flex-1-0"
+                    >
+                      <v-sheet width="200" height="223" class="d-flex flex-column justify-end">
+                        <router-link to="">
+                          <v-img :src="`images/${ad.img}`" alt="배너" />
+                        </router-link>
+                      </v-sheet>
+
+                      <v-sheet min-height="60" class="mt-3">
+                        <router-link to="" class="custom-router-link">
+                          <div class="book-title text-break">
+                            {{ ad.title }}
+                          </div>
+                          <div class="book-author text-break text-grey">{{ ad.subTitle }}</div>
+                        </router-link>
+                      </v-sheet>
+                    </v-card>
+                  </v-sheet>
+                </template>
+              </v-sheet>
+            </v-window-item>
+          </v-window>
+        </v-card>
+        <!-- //탭 -->
+
+        <!-- 광고 -->
+        <v-card width="30%" style="padding-top: 36px">
+          <carousel-c min-height="35vh" :slides="WAD_BANNER" :auto-play="0" class="h-100">
+            <template v-for="banner in WAD_BANNER" :key="banner.key" v-slot:[banner.key]>
+              <v-sheet width="100%" class="my-3">
+                <router-link to="">
+                  <v-img :src="`/images/${banner.img}`" alt="배너" max-height="35vh" />
+                </router-link>
+              </v-sheet>
             </template>
-          </v-card>
+
+            <template #pagination></template>
+          </carousel-c>
+        </v-card>
+        <!-- // 광고 -->
+      </v-sheet>
+
+      <!-- 어제 베스트 셀러 TOP 10 -->
+      <v-sheet v-if="yesterdayBestSeller">
+        <section-c title="어제 베스트셀러 TOP 10">
+          <template #text>
+            <v-card flat class="d-flex flex-column">
+              <v-sheet class="d-flex align-end justify-center ga-5 mb-10">
+                <template v-for="book in yesterdayBestSeller.item.slice(0, 2)" :key="book.itemId">
+                  <book-rank-c
+                    thumbnail-width="100"
+                    thumbnail-height="150"
+                    :cover="book.cover"
+                    :rank="book.bestRank"
+                    :title="book.title"
+                    :author="book.author"
+                    class="rank-book"
+                  ></book-rank-c>
+                </template>
+              </v-sheet>
+
+              <v-sheet width="100%" height="260" class="d-flex flex-column flex-wrap">
+                <template v-for="book in yesterdayBestSeller.item.slice(2)" :key="book.itemId">
+                  <book-rank-c
+                    thumbnail-width="100"
+                    thumbnail-height="120"
+                    :class="{ 'mb-5': book.bestRank % 2 === 1 }"
+                    :cover="book.cover"
+                    :rank="book.bestRank"
+                    :title="book.title"
+                    :author="book.author"
+                  ></book-rank-c>
+                </template>
+              </v-sheet>
+            </v-card>
+          </template>
+        </section-c>
+      </v-sheet>
+      <!-- // 어제 베스트 셀러 TOP 10 -->
+    </v-sheet>
+  </container-c>
+
+  <!-- 와이드 배너 광고 -->
+  <v-sheet class="wide-banner">
+    <carousel-c :auto-play="0" :slides="WIDE_BANNER">
+      <template v-for="banner in WIDE_BANNER" :key="banner.key" v-slot:[banner.key]>
+        <v-sheet :color="banner.bgColor" width="100%" class="wide-banner-slide">
+          <!--  color="#e5e2be" -->
+          <router-link to="">
+            <v-img :src="`/images/${banner.img}`" alt="배너" height="130" />
+          </router-link>
+        </v-sheet>
+      </template>
+    </carousel-c>
+  </v-sheet>
+  <!-- // 와이드 배너 광고 -->
+
+  <container-c>
+    <v-sheet v-if="bestDVD" rounded="lg" class="d-flex flex-column ga-10">
+      <!-- 알라딘 오디오북 -->
+      <section-c title="이달의 베스트 DVD">
+        <template #text>
+          <carousel-c :auto-play="0" :items-to-show="5" :slides="bestDVD.item">
+            <template #slide="{ slide }">
+              <book-intro-c
+                :book="slide"
+                thumbnail-width="180"
+                thumbnail-height="250"
+              ></book-intro-c>
+            </template>
+
+            <template #pagination></template>
+          </carousel-c>
         </template>
       </section-c>
+      <!-- // 알라딘 오디오북-->
+
+      <!-- 알라디너 TV -->
+      <section-c title="알라디너 TV">
+        <template #text>
+          <v-sheet class="d-flex align-center justify-space-between">
+            <template v-for="tv in ALADINER_TV" :key="tv.key">
+              <v-sheet max-width="30%" class="d-flex flex-column">
+                <div v-html="tv.html" class=""></div>
+                <v-sheet class="book-title mx-auto" width="90%" height="50">{{ tv.title }}</v-sheet>
+              </v-sheet>
+            </template>
+          </v-sheet>
+        </template>
+      </section-c>
+      <!-- // 알라디너 TV-->
+
+      <!-- 알라딘 이벤트 -->
+      <section-c title="알라딘 이벤트">
+        <template #text>
+          <v-sheet class="d-flex align-center justify-space-between">
+            <template v-for="event in ALADIN_EVENTS" :key="event.key">
+              <v-sheet>
+                <router-link to="" class="d-inline-block">
+                  <v-img
+                    :src="`/images/${event.img}`"
+                    alt="이벤트"
+                    width="330"
+                    style="border-radius: 8px"
+                  />
+                </router-link>
+              </v-sheet>
+            </template>
+          </v-sheet>
+        </template>
+      </section-c>
+      <!-- // 알라딘 이벤트-->
     </v-sheet>
-  </v-sheet>
+  </container-c>
 </template>
 
 <script setup>
 import CarouselC from '@/components/carousel/CarouselC.vue'
-import { MAIN_BANNERS, MAIN_TABS, WAD_BANNER } from '@/config/welcome.js'
-import { ref } from 'vue'
+import {
+  MAIN_BANNERS,
+  MAIN_TABS,
+  WAD_BANNER,
+  WIDE_BANNER,
+  ALADINER_TV,
+  ALADIN_EVENTS
+} from '@/config/welcome.js'
+import { reactive, ref } from 'vue'
 import SectionC from '@/components/global/SectionC.vue'
 import BookRankC from '@/components/global/BookRankC.vue'
 import { useItemListStore } from '@/stores/itemList.js'
 import { storeToRefs } from 'pinia'
 import BookIntroC from '@/components/global/BookIntroC.vue'
+import ContainerC from '@/components/ContainerC.vue'
 
 const itemListStore = useItemListStore()
 const { itemTypes } = storeToRefs(itemListStore)
 const { getItemList } = itemListStore
 const currentSlide = ref(0)
+const currentTabSlide = reactive({ editor_choice: 0, ebook: 0, foreign: 0, goods: 0 })
 const activeTab = ref(MAIN_TABS[0].key)
+const yesterdayBestSeller = ref(undefined)
+const bestDVD = ref(undefined)
 
 // CREATED
-const defaultParams = {
-  MaxResults: 10,
-  Start: 1
-}
 const makeParams = ({
   type = '',
   QueryType = '',
   CategoryId = '0',
   SearchTarget = 'Book',
-  Year = '0',
-  Month = '0',
-  Week = '0'
+  Year = null,
+  Month = null,
+  Week = null,
+  MaxResults = 10,
+  Start = 1,
+  Cover = 'Big'
 }) => {
   return {
-    ...defaultParams,
     type,
     QueryType,
     CategoryId,
     SearchTarget,
     Year,
     Month,
-    Week
+    Week,
+    MaxResults,
+    Start,
+    Cover
   }
 }
 
-Promise.all([
-  getItemList(
-    makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
-  ),
-  getItemList(
+// Promise.all([
+//   getItemList(
+//     makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'week',
+//       QueryType: 'Bestseller'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'new_book',
+//       QueryType: 'ItemNewAll'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'blog',
+//       QueryType: 'BlogBest'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'standout',
+//       QueryType: 'ItemNewSpecial'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'ebook',
+//       QueryType: 'ItemNewSpecial',
+//       SearchTarget: 'eBook'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'foreign',
+//       QueryType: 'ItemNewAll',
+//       SearchTarget: 'Foreign'
+//     })
+//   )
+// ])
+
+// 어제 베스트셀러 TOP 10
+const getYesterdayBestSellerList = async () => {
+  yesterdayBestSeller.value = await getItemList(
     makeParams({
-      type: 'week',
       QueryType: 'Bestseller',
-      Year: '2024',
-      Month: new Date().getMonth() + 1,
-      Week: 3
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'new_book',
-      QueryType: 'ItemNewAll'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'blog',
-      QueryType: 'BlogBest'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'standout',
-      QueryType: 'ItemNewSpecial'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'ebook',
-      QueryType: 'ItemNewSpecial',
-      SearchTarget: 'eBook'
+      SearchTarget: 'eBook',
+      CategoryId: '1',
+      Cover: 'MidBig'
     })
   )
-]).then(() => {
-  console.log('### PROMISE.ALL', itemTypes)
-})
+
+  console.log('### 어제 베스트셀러 TOP 10', yesterdayBestSeller.value)
+}
+getYesterdayBestSellerList()
+
+// 이달의 베스트 DVD
+const getBestDVDList = async () => {
+  bestDVD.value = await getItemList(
+    makeParams({
+      QueryType: 'Bestseller',
+      SearchTarget: 'DVD',
+      Cover: 'Big'
+    })
+  )
+
+  console.log('### 이달의 베스트 DVD', bestDVD.value)
+}
+getBestDVDList()
+
+// COMPUTED
+// const currentTabSlide = computed(() => {
+//   return activeTab && 0
+// })
 
 // METHODS
 const onSlideHandler = $event => {
@@ -198,15 +406,14 @@ const onSlideHandler = $event => {
 
   currentSlide.value = slidingToIndex
 }
+
+const onTapClickHandler = activeTab => {
+  console.log('[onTapUpdateHandler ]', activeTab, currentTabSlide[activeTab.key])
+  // currentTabSlide[activeTab.key] = 0
+}
 </script>
 
 <style lang="scss">
-.carousel-container {
-  border: 5px solid #e3f2fd;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
 .banner-container {
   display: flex;
   width: 100%;
@@ -217,22 +424,28 @@ const onSlideHandler = $event => {
     justify-content: center;
     gap: 60px;
   }
+}
 
-  .banner-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 25%;
+.tab-window {
+  border-color: rgb(24, 103, 192) !important;
+}
 
-    .thumbnail-box {
-      width: 170px;
-      height: 260px;
+.wide-banner {
+  width: 100%;
+  height: 130px;
+  margin: 80px 0;
 
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
+  .wide-banner-slide {
+    position: relative;
 
-      margin-bottom: 16px;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 30px;
+      background-color: #ffffff;
     }
   }
 }

@@ -8,3 +8,9 @@
     text-decoration: none !important;
     color: initial !important;
 }
+
+.my-border {
+    border: 5px solid #e3f2fd !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+}

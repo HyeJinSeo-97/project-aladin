@@ -9,6 +9,7 @@ export const getItemListApi = params => {
       .get(BASE_URL, params)
       .then(res => {
         const { errorCode } = res.data
+
         if (errorCode) reject(res.data)
         else resolve(res.data)
       })

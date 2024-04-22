@@ -1,26 +1,28 @@
 <template>
-  <v-card flat>
-    <v-sheet class="thumbnail-box">
-      <router-link to="">
-        <v-img :src="banner.cover" alt="책 표지" />
+  <v-card flat class="d-flex flex-column align-center">
+    <v-sheet :width="thumbnailWidth" :height="thumbnailHeight" class="thumbnail-box mb-3">
+      <router-link to="" class="h-100">
+        <v-img :src="book.cover" alt="책 표지" />
       </router-link>
     </v-sheet>
 
-    <v-sheet width="75%" class="text-box">
+    <v-sheet :width="thumbnailWidth" min-height="60" class="text-box">
       <div class="book-title text-break">
-        {{ banner.title }}
+        {{ book.title }}
       </div>
-      <div class="book-author text-break text-grey">{{ banner.author }}</div>
+      <div class="book-author text-break text-grey">{{ book.author }}</div>
     </v-sheet>
   </v-card>
 </template>
 
 <script setup>
 defineProps({
-  banner: {
+  book: {
     type: Object,
     default: () => {}
-  }
+  },
+  thumbnailWidth: String,
+  thumbnailHeight: String
 })
 </script>
 
@@ -39,5 +41,11 @@ defineProps({
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.thumbnail-box {
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: end;
 }
 </style>

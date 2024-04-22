@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-card-title class="text-left">
       <router-link to="" class="custom-router-link">
         <strong>{{ title }}</strong>
@@ -7,7 +7,7 @@
       </router-link>
     </v-card-title>
 
-    <v-card-text class="text-left">
+    <v-card-text class="mt-5">
       <slot name="text"></slot>
     </v-card-text>
   </v-card>

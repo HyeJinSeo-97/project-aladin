@@ -5,12 +5,15 @@
     :model-value="currentSlide"
     :items-to-show="itemsToShow"
     :autoplay="autoPlay"
-    :wrap-around="true"
+    :wrap-around="wrapAround"
+    :pause-autoplay-on-hover="pauseAutoplayOnHover"
     @slide-start="$emit('slide-start', $event)"
     @slide-end="$emit('slide-end', $event)"
   >
-    <Slide v-for="slide in slides" :key="slide.key">
-      <v-sheet :min-height="minHeight" class="d-flex w-100 carousel-slide">
+    <Slide v-for="slide in slides" :key="slide.key || slide.itemId">
+      <slot name="slide" v-bind:slide="slide"></slot>
+
+      <v-sheet v-if="!$slots['slide']" :min-height="minHeight" class="d-flex w-100 carousel-slide">
         <slot :name="slide.key" v-bind:slide="slide"></slot>
       </v-sheet>
     </Slide>
@@ -53,10 +56,18 @@ defineProps({
   minHeight: {
     type: String,
     default: ''
+  },
+  wrapAround: {
+    type: Boolean,
+    default: true
+  },
+  pauseAutoplayOnHover: {
+    type: Boolean,
+    default: true
   }
 })
 
-defineEmits(['slide-start', 'slide-end'])
+defineEmits(['init', 'slide-start', 'slide-end'])
 </script>
 
 <style lang="scss">

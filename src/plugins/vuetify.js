@@ -10,6 +10,13 @@ const vuetify = createVuetify({
   directives,
   icons: {
     defaultSet: 'mdi' // This is already the default value - only for display purposes
+  },
+  theme: {
+    variations: {
+      colors: ['primary', 'secondary'],
+      lighten: 5,
+      darken: 5
+    }
   }
 })
 
