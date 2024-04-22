@@ -1,5 +1,5 @@
 <template>
-  <v-container class="global-container">
+  <v-container class="global-container bg-transparent">
     <slot></slot>
   </v-container>
 </template>

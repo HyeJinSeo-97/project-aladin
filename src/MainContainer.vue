@@ -1,6 +1,6 @@
 <script setup>
 import HeaderC from '@/components/HeaderC.vue'
-import ContainerC from '@/components/ContainerC.vue'
+import FooterC from '@/components/FooterC.vue'
 </script>
 
 <template>
@@ -10,10 +10,7 @@ import ContainerC from '@/components/ContainerC.vue'
     <v-sheet class="py-4">
       <router-view></router-view>
     </v-sheet>
-    <!--    <container-c>-->
-    <!--      <v-sheet class="py-4">-->
-    <!--        <router-view></router-view>-->
-    <!--      </v-sheet>-->
-    <!--    </container-c>-->
   </v-main>
+
+  <footer-c></footer-c>
 </template>
