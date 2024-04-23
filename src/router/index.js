@@ -25,7 +25,10 @@ const router = createRouter({
       path: '/login',
       component: () => import('@/views/LoginView.vue')
     }
-  ]
+  ],
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
 router.beforeEach((to, from, next) => {

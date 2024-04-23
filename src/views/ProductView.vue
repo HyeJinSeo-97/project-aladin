@@ -214,7 +214,7 @@
 </template>
 <script setup>
 import ContainerC from '@/components/ContainerC.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useLookUpStore } from '@/stores/lookUp.js'
 import TextFieldC from '@/components/global/TextFieldC.vue'
 
@@ -241,7 +241,7 @@ const props = defineProps({
 })
 
 // CREATED
-const getProduct = async () => {
+const init = async () => {
   const params = {
     itemIdType: 'ISBN',
     ItemId: props.isbn13,
@@ -251,7 +251,7 @@ const getProduct = async () => {
   console.log('### 상품 조회', product.value)
 }
 
-getProduct()
+init()
 
 // METHODS
 </script>
