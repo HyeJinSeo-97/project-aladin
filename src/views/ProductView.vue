@@ -5,14 +5,20 @@
         <v-img :src="product.cover" alt="표지" width="200" height="283" />
         <v-btn
           block
-          class="my-3"
           variant="outlined"
           color="primary"
           size="small"
+          class="mt-3"
           prepend-icon="mdi-book-open-blank-variant-outline"
         >
           미리보기
         </v-btn>
+        <div class="d-flex align-center justify-space-between my-3">
+          <v-label class="font-size-85">수량</v-label>
+          <v-sheet width="80%">
+            <text-field-c v-model="bookCount" type="number" variant="outlined" />
+          </v-sheet>
+        </div>
         <v-btn block color="pink">장바구니</v-btn>
         <v-btn block color="red" class="mt-1 mb-3">바로구매</v-btn>
         <div class="d-flex justify-space-between ga-2">
@@ -210,6 +216,7 @@
 import ContainerC from '@/components/ContainerC.vue'
 import { ref } from 'vue'
 import { useLookUpStore } from '@/stores/lookUp.js'
+import TextFieldC from '@/components/global/TextFieldC.vue'
 
 // -----------------------------------------------------------
 const RADIOS = [
@@ -225,6 +232,7 @@ const { actions } = lookUpStore
 const product = ref(undefined)
 const showReview = ref(false)
 const rating = ref(5) // 리뷰 별점
+const bookCount = ref(1) // 수량
 const reviewRadio = ref(undefined)
 
 // PROPS
