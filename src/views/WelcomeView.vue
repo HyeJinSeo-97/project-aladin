@@ -312,49 +312,49 @@ const makeParams = ({
   }
 }
 
-// Promise.all([
-//   getItemList(
-//     makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'week',
-//       QueryType: 'Bestseller'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'new_book',
-//       QueryType: 'ItemNewAll'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'blog',
-//       QueryType: 'BlogBest'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'standout',
-//       QueryType: 'ItemNewSpecial'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'ebook',
-//       QueryType: 'ItemNewSpecial',
-//       SearchTarget: 'eBook'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'foreign',
-//       QueryType: 'ItemNewAll',
-//       SearchTarget: 'Foreign'
-//     })
-//   )
-// ])
+Promise.all([
+  getItemList(
+    makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
+  ),
+  getItemList(
+    makeParams({
+      type: 'week',
+      QueryType: 'Bestseller'
+    })
+  ),
+  getItemList(
+    makeParams({
+      type: 'new_book',
+      QueryType: 'ItemNewAll'
+    })
+  ),
+  getItemList(
+    makeParams({
+      type: 'blog',
+      QueryType: 'BlogBest'
+    })
+  ),
+  getItemList(
+    makeParams({
+      type: 'standout',
+      QueryType: 'ItemNewSpecial'
+    })
+  ),
+  getItemList(
+    makeParams({
+      type: 'ebook',
+      QueryType: 'ItemNewSpecial',
+      SearchTarget: 'eBook'
+    })
+  ),
+  getItemList(
+    makeParams({
+      type: 'foreign',
+      QueryType: 'ItemNewAll',
+      SearchTarget: 'Foreign'
+    })
+  )
+])
 
 // 어제 베스트셀러 TOP 10
 const getYesterdayBestSellerList = async () => {
@@ -366,8 +366,6 @@ const getYesterdayBestSellerList = async () => {
       Cover: 'MidBig'
     })
   )
-
-  console.log('### 어제 베스트셀러 TOP 10', yesterdayBestSeller.value)
 }
 getYesterdayBestSellerList()
 
@@ -380,8 +378,6 @@ const getBestDVDList = async () => {
       Cover: 'Big'
     })
   )
-
-  console.log('### 이달의 베스트 DVD', bestDVD.value)
 }
 getBestDVDList()
 

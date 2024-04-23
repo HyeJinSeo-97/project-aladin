@@ -44,7 +44,7 @@ defineProps({
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .rank-book {
   padding: 10px 24px;
   box-shadow: 0 5px 12px 6px rgba(0, 0, 0, 0.1);

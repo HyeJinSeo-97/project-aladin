@@ -1,7 +1,7 @@
 <template>
-  <v-card flat class="d-flex flex-column align-center">
+  <v-card v-if="book" flat class="d-flex flex-column align-center">
     <v-sheet :width="thumbnailWidth" :height="thumbnailHeight" class="thumbnail-box mb-3">
-      <router-link to="" class="h-100">
+      <router-link :to="{ name: 'product', params: { isbn13: book.isbn13 } }" class="h-100">
         <v-img :src="book.cover" alt="책 표지" />
       </router-link>
     </v-sheet>
@@ -26,7 +26,7 @@ defineProps({
 })
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .book-title {
   display: -webkit-box;
   -webkit-line-clamp: 2;

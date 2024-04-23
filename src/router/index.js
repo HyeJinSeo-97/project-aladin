@@ -12,6 +12,12 @@ const router = createRouter({
         {
           path: 'welcome',
           component: () => import('@/views/WelcomeView.vue')
+        },
+        {
+          path: 'product/:isbn13',
+          name: 'product',
+          props: true,
+          component: () => import('@/views/ProductView.vue')
         }
       ]
     },
