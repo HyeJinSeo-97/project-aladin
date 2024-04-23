@@ -15,7 +15,7 @@ const router = createRouter({
         },
         {
           path: 'product/:isbn13',
-          name: 'product',
+          name: 'Product',
           props: true,
           component: () => import('@/views/ProductView.vue')
         }

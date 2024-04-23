@@ -13,17 +13,17 @@
         >
           <template v-for="main in MAIN_BANNERS" :key="main.key" v-slot:[main.key]>
             <v-sheet class="banner-container" :class="`banner-${main.key}`">
-              <template v-for="banner in itemTypes[main.key].item?.slice(0, 4)" :key="banner.key">
+              <template v-for="book in itemTypes[main.key].item?.slice(0, 4)" :key="book.key">
                 <template v-if="main.key === 'event'">
                   <v-card width="25%" class="d-flex flex-column justify-center">
                     <router-link to="">
-                      <v-img :src="`images/${banner.img}`" alt="배너" />
+                      <v-img :src="`images/${book.img}`" alt="배너" />
                     </router-link>
                   </v-card>
                 </template>
                 <template v-else>
                   <book-intro-c
-                    :book="banner"
+                    :book="book"
                     thumbnail-width="200"
                     thumbnail-height="280"
                     class="w-25"
@@ -287,7 +287,6 @@ const bestDVD = ref(undefined)
 
 // CREATED
 const makeParams = ({
-  type = '',
   QueryType = '',
   CategoryId = '0',
   SearchTarget = 'Book',
@@ -299,7 +298,6 @@ const makeParams = ({
   Cover = 'Big'
 }) => {
   return {
-    type,
     QueryType,
     CategoryId,
     SearchTarget,
@@ -312,53 +310,103 @@ const makeParams = ({
   }
 }
 
-Promise.all([
-  getItemList(
-    makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
-  ),
-  getItemList(
-    makeParams({
-      type: 'week',
-      QueryType: 'Bestseller'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'new_book',
-      QueryType: 'ItemNewAll'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'blog',
-      QueryType: 'BlogBest'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'standout',
-      QueryType: 'ItemNewSpecial'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'ebook',
-      QueryType: 'ItemNewSpecial',
-      SearchTarget: 'eBook'
-    })
-  ),
-  getItemList(
-    makeParams({
-      type: 'foreign',
-      QueryType: 'ItemNewAll',
-      SearchTarget: 'Foreign'
-    })
-  )
-])
+const init = async () => {
+  // 메인 Carousel
+  await Promise.all([
+    getItemList('editor_choice', makeParams({ QueryType: 'ItemEditorChoice', CategoryId: '1' })),
+    getItemList(
+      'week',
+      makeParams({
+        QueryType: 'Bestseller'
+      })
+    ),
+    getItemList(
+      'new_book',
+      makeParams({
+        QueryType: 'ItemNewAll'
+      })
+    ),
+    getItemList(
+      'blog',
+      makeParams({
+        QueryType: 'BlogBest'
+      })
+    ),
+    getItemList(
+      'standout',
+      makeParams({
+        QueryType: 'ItemNewSpecial'
+      })
+    ),
+    getItemList(
+      'ebook',
+      makeParams({
+        QueryType: 'ItemNewSpecial',
+        SearchTarget: 'eBook'
+      })
+    ),
+    getItemList(
+      'foreign',
+      makeParams({
+        QueryType: 'ItemNewAll',
+        SearchTarget: 'Foreign'
+      })
+    )
+  ]).then(res => {
+    console.log('[ INIT ]', res)
+  })
+}
+
+init()
+
+// Promise.all([
+//   getItemList(
+//     makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'week',
+//       QueryType: 'Bestseller'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'new_book',
+//       QueryType: 'ItemNewAll'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'blog',
+//       QueryType: 'BlogBest'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'standout',
+//       QueryType: 'ItemNewSpecial'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'ebook',
+//       QueryType: 'ItemNewSpecial',
+//       SearchTarget: 'eBook'
+//     })
+//   ),
+//   getItemList(
+//     makeParams({
+//       type: 'foreign',
+//       QueryType: 'ItemNewAll',
+//       SearchTarget: 'Foreign'
+//     })
+//   )
+// ])
 
 // 어제 베스트셀러 TOP 10
 const getYesterdayBestSellerList = async () => {
   yesterdayBestSeller.value = await getItemList(
+    undefined,
     makeParams({
       QueryType: 'Bestseller',
       SearchTarget: 'eBook',
@@ -372,6 +420,7 @@ getYesterdayBestSellerList()
 // 이달의 베스트 DVD
 const getBestDVDList = async () => {
   bestDVD.value = await getItemList(
+    undefined,
     makeParams({
       QueryType: 'Bestseller',
       SearchTarget: 'DVD',

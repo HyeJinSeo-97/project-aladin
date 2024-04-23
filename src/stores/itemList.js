@@ -52,10 +52,10 @@ const useItemListStore = defineStore('itemList', () => {
     }
   })
 
-  const getItemList = params => {
+  const getItemList = (type, params) => {
     return getItemListApi(params)
       .then(res => {
-        if (params.type) itemTypes[params.type] = res
+        if (type) itemTypes[type] = res
 
         return res
       })

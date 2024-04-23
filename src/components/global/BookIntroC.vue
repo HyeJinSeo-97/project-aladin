@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="book" flat class="d-flex flex-column align-center">
     <v-sheet :width="thumbnailWidth" :height="thumbnailHeight" class="thumbnail-box mb-3">
-      <router-link :to="{ name: 'product', params: { isbn13: book.isbn13 } }" class="h-100">
+      <router-link to="" class="h-100" @click="onRouterHandler">
         <v-img :src="book.cover" alt="책 표지" />
       </router-link>
     </v-sheet>
@@ -16,7 +16,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
   book: {
     type: Object,
     default: () => {}
@@ -24,6 +26,16 @@ defineProps({
   thumbnailWidth: String,
   thumbnailHeight: String
 })
+
+const router = useRouter()
+
+// METHODS
+const onRouterHandler = () => {
+  router.push({
+    name: 'Product',
+    params: { isbn13: props.book.isbn13 }
+  })
+}
 </script>
 
 <style scoped lang="scss">
