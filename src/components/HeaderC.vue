@@ -2,7 +2,7 @@
   <v-app-bar absolute flat density="compact">
     <container-c>
       <router-link to="/" class="d-inline-block">
-        <v-img src="images/aladin_logo.jpg" alt="로고" width="100" />
+        <v-img src="/images/aladin_logo.jpg" alt="로고" width="100" />
       </router-link>
 
       <v-sheet position="absolute" class="toolbar-actions">
