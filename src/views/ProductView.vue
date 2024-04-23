@@ -269,6 +269,7 @@ table {
   tr {
     th,
     td {
+      border-bottom: none !important;
       text-align: left;
     }
   }
