@@ -268,7 +268,7 @@ import {
   ALADINER_TV,
   ALADIN_EVENTS
 } from '@/config/welcome.js'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import SectionC from '@/components/global/SectionC.vue'
 import BookRankC from '@/components/global/BookRankC.vue'
 import { useItemListStore } from '@/stores/itemList.js'
@@ -355,56 +355,8 @@ const init = async () => {
   ]).then(res => {
     console.log('[ INIT ]', res)
   })
-}
 
-init()
-
-// Promise.all([
-//   getItemList(
-//     makeParams({ type: 'editor_choice', QueryType: 'ItemEditorChoice', CategoryId: '1' })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'week',
-//       QueryType: 'Bestseller'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'new_book',
-//       QueryType: 'ItemNewAll'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'blog',
-//       QueryType: 'BlogBest'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'standout',
-//       QueryType: 'ItemNewSpecial'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'ebook',
-//       QueryType: 'ItemNewSpecial',
-//       SearchTarget: 'eBook'
-//     })
-//   ),
-//   getItemList(
-//     makeParams({
-//       type: 'foreign',
-//       QueryType: 'ItemNewAll',
-//       SearchTarget: 'Foreign'
-//     })
-//   )
-// ])
-
-// 어제 베스트셀러 TOP 10
-const getYesterdayBestSellerList = async () => {
+  // 어제 베스트셀러 TOP 10
   yesterdayBestSeller.value = await getItemList(
     undefined,
     makeParams({
@@ -414,11 +366,8 @@ const getYesterdayBestSellerList = async () => {
       Cover: 'MidBig'
     })
   )
-}
-getYesterdayBestSellerList()
 
-// 이달의 베스트 DVD
-const getBestDVDList = async () => {
+  // 이달의 베스트 DVD
   bestDVD.value = await getItemList(
     undefined,
     makeParams({
@@ -428,12 +377,8 @@ const getBestDVDList = async () => {
     })
   )
 }
-getBestDVDList()
 
-// COMPUTED
-// const currentTabSlide = computed(() => {
-//   return activeTab && 0
-// })
+init()
 
 // METHODS
 const onSlideHandler = $event => {
