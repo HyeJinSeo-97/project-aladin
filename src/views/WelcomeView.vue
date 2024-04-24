@@ -154,10 +154,7 @@
                   <book-rank-c
                     thumbnail-width="100"
                     thumbnail-height="150"
-                    :cover="book.cover"
-                    :rank="book.bestRank"
-                    :title="book.title"
-                    :author="book.author"
+                    :book="book"
                     class="rank-book"
                   ></book-rank-c>
                 </template>
@@ -168,11 +165,8 @@
                   <book-rank-c
                     thumbnail-width="100"
                     thumbnail-height="120"
+                    :book="book"
                     :class="{ 'mb-5': book.bestRank % 2 === 1 }"
-                    :cover="book.cover"
-                    :rank="book.bestRank"
-                    :title="book.title"
-                    :author="book.author"
                   ></book-rank-c>
                 </template>
               </v-sheet>
@@ -268,7 +262,7 @@ import {
   ALADINER_TV,
   ALADIN_EVENTS
 } from '@/config/welcome.js'
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import SectionC from '@/components/global/SectionC.vue'
 import BookRankC from '@/components/global/BookRankC.vue'
 import { useItemListStore } from '@/stores/itemList.js'

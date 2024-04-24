@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="book"
     flat
     min-width="25%"
     :width="width"
@@ -7,13 +8,17 @@
     :class="{ 'flex-column': vertical }"
   >
     <v-sheet :width="thumbnailWidth" :height="thumbnailHeight">
-      <router-link to="" class="d-inline-block h-100">
-        <v-img :src="cover" alt="썸네일" width="100" />
+      <router-link
+        to=""
+        class="d-inline-block h-100"
+        @click="useRouterLink('Product', { isbn13: book.isbn13 })"
+      >
+        <v-img :src="book.cover" alt="썸네일" width="100" />
       </router-link>
     </v-sheet>
 
     <v-sheet class="book-ranking font-weight-bold mx-5" :class="{ 'mx-0 my-3': vertical }">
-      {{ rank }}
+      {{ book.rank }}
     </v-sheet>
 
     <v-sheet class="book-desc">
@@ -23,20 +28,19 @@
           :class="{ 'text-center': vertical }"
           style="font-weight: 600"
         >
-          {{ title }}
+          {{ book.title }}
         </p>
       </router-link>
-      <p class="rank-title text-break text-left text-grey mt-1">{{ author }}</p>
+      <p class="rank-title text-break text-left text-grey mt-1">{{ book.author }}</p>
     </v-sheet>
   </v-card>
 </template>
 
 <script setup>
+import { useRouterLink } from '@/composable/common.js'
+
 defineProps({
-  rank: Number,
-  cover: String,
-  title: String,
-  author: String,
+  book: Object,
   width: String,
   vertical: Boolean,
   thumbnailWidth: String,
