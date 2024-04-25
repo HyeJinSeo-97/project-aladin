@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o as t,c as a,w as r,e as s,r as c}from"./index-CGpR0p35.js";const _={};function i(e,l){const n=c("v-container");return t(),a(n,{class:"global-container bg-transparent"},{default:r(()=>[s(e.$slots,"default",{},void 0,!0)]),_:3})}const p=o(_,[["render",i],["__scopeId","data-v-9698aaa2"]]);export{p as C};
