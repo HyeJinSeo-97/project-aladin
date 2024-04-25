@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getItemListApi } from '@/module/itemList.js'
 import swal from '@/plugins/swal.js'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 
 const useItemListStore = defineStore('itemList', () => {
   const itemTypes = reactive({

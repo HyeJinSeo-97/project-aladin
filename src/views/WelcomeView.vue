@@ -17,7 +17,7 @@
                 <template v-if="main.key === 'event'">
                   <v-card width="25%" class="d-flex flex-column justify-center">
                     <router-link to="">
-                      <v-img :src="`/images/${book.img}`" alt="배너" />
+                      <v-img :src="`/project-aladin/images/${book.img}`" alt="배너" />
                     </router-link>
                   </v-card>
                 </template>
@@ -235,7 +235,7 @@
               <v-sheet>
                 <router-link to="" class="d-inline-block">
                   <v-img
-                    :src="`/images/${event.img}`"
+                    :src="`/project-aladin/images/${event.img}`"
                     alt="이벤트"
                     width="330"
                     style="border-radius: 8px"

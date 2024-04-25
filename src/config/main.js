@@ -1,8 +1,8 @@
 const PRIVATE_KEY = 'ttbshyejin97971052001'
 const APIS = {
   SEARCH: '/api/ItemSearch.aspx',
-  ITEM_LIST: '/api/ItemList.aspx',
-  LOOK_UP: '/api/ItemLookUp.aspx'
+  ITEM_LIST: '/api/itemList',
+  LOOK_UP: '/api/lookUp'
 }
 const OUTPUT = 'JS'
 const VERSION = 20131101
