@@ -17,7 +17,7 @@
                 <template v-if="main.key === 'event'">
                   <v-card width="25%" class="d-flex flex-column justify-center">
                     <router-link to="">
-                      <v-img :src="`images/${book.img}`" alt="배너" />
+                      <v-img :src="`/images/${book.img}`" alt="배너" />
                     </router-link>
                   </v-card>
                 </template>
@@ -64,7 +64,6 @@
               size="small"
               class=""
               selected-class="bg-primary-darken-2"
-              @click="onTapClickHandler(tab)"
             >
               {{ tab.text }}
             </v-tab>
@@ -133,7 +132,7 @@
             <template v-for="banner in WAD_BANNER" :key="banner.key" v-slot:[banner.key]>
               <v-sheet width="100%" class="my-3">
                 <router-link to="">
-                  <v-img :src="`/images/${banner.img}`" alt="배너" max-height="35vh" />
+                  <v-img :src="`images/${banner.img}`" alt="배너" max-height="35vh" />
                 </router-link>
               </v-sheet>
             </template>
@@ -185,7 +184,7 @@
         <v-sheet :color="banner.bgColor" width="100%" class="wide-banner-slide">
           <!--  color="#e5e2be" -->
           <router-link to="">
-            <v-img :src="`/images/${banner.img}`" alt="배너" height="130" />
+            <v-img :src="`images/${banner.img}`" alt="배너" height="130" />
           </router-link>
         </v-sheet>
       </template>
@@ -262,7 +261,7 @@ import {
   ALADINER_TV,
   ALADIN_EVENTS
 } from '@/config/welcome.js'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import SectionC from '@/components/global/SectionC.vue'
 import BookRankC from '@/components/global/BookRankC.vue'
 import { useItemListStore } from '@/stores/itemList.js'
@@ -274,7 +273,6 @@ const itemListStore = useItemListStore()
 const { itemTypes } = storeToRefs(itemListStore)
 const { getItemList } = itemListStore
 const currentSlide = ref(0)
-const currentTabSlide = reactive({ editor_choice: 0, ebook: 0, foreign: 0, goods: 0 })
 const activeTab = ref(MAIN_TABS[0].key)
 const yesterdayBestSeller = ref(undefined)
 const bestDVD = ref(undefined)
@@ -346,9 +344,7 @@ const init = async () => {
         SearchTarget: 'Foreign'
       })
     )
-  ]).then(res => {
-    console.log('[ INIT ]', res)
-  })
+  ])
 
   // 어제 베스트셀러 TOP 10
   yesterdayBestSeller.value = await getItemList(
@@ -389,11 +385,6 @@ const onSlideHandler = $event => {
   }
 
   currentSlide.value = slidingToIndex
-}
-
-const onTapClickHandler = activeTab => {
-  console.log('[onTapUpdateHandler ]', activeTab, currentTabSlide[activeTab.key])
-  // currentTabSlide[activeTab.key] = 0
 }
 </script>
 

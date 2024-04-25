@@ -66,11 +66,11 @@ const MAIN_TABS = [
 const WAD_BANNER = [
   {
     key: 'wad1',
-    img: '240408_b2097_wrtop.jpg'
+    img: '240424_mm_wrtop.jpg'
   },
   {
     key: 'wad2',
-    img: '240408_b2094_wrtop.jpg'
+    img: '240423_b2107_wrtop.jpg'
   },
   {
     key: 'wad3',

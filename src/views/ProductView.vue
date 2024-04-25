@@ -22,17 +22,18 @@
         <v-btn block color="pink">장바구니</v-btn>
         <v-btn block color="red" class="mt-1 mb-3">바로구매</v-btn>
         <div class="d-flex justify-space-between ga-2">
-          <v-btn variant="outlined" color="teal" size="small" width="48%" prepend-icon="mdi-gift">
+          <v-btn variant="outlined" size="small" width="48%" prepend-icon="mdi-gift">
             선물하기
           </v-btn>
           <v-btn
             variant="outlined"
-            color="teal"
+            :color="onLike ? 'red' : 'default'"
             size="small"
             width="48%"
-            prepend-icon="mdi-heart-box"
+            :prepend-icon="onLike ? 'mdi-heart' : 'mdi-heart-outline'"
+            @click="onClickLike"
           >
-            보관함
+            좋아요
           </v-btn>
         </div>
       </v-sheet>
@@ -214,9 +215,10 @@
 </template>
 <script setup>
 import ContainerC from '@/components/ContainerC.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useLookUpStore } from '@/stores/lookUp.js'
 import TextFieldC from '@/components/global/TextFieldC.vue'
+import { getLike, removeLike, setLike } from '@/utils/product.js'
 
 // -----------------------------------------------------------
 const RADIOS = [
@@ -234,6 +236,7 @@ const showReview = ref(false)
 const rating = ref(5) // 리뷰 별점
 const bookCount = ref(1) // 수량
 const reviewRadio = ref(undefined)
+const onLike = ref(false) // 좋아요 유무
 
 // PROPS
 const props = defineProps({
@@ -242,18 +245,33 @@ const props = defineProps({
 
 // CREATED
 const init = async () => {
+  // 상품 조회
   const params = {
     itemIdType: 'ISBN',
     ItemId: props.isbn13,
     Cover: 'Big'
   }
   product.value = await actions.getLookUp(params)
-  console.log('### 상품 조회', product.value)
+
+  // 해당 도서에 좋아요 적용 유무
+  const likes = getLike()
+  const targetLike = likes.findIndex(el => el === props.isbn13)
+
+  if (targetLike > -1) onLike.value = true
 }
 
 init()
 
 // METHODS
+const onClickLike = () => {
+  if (!onLike.value) {
+    onLike.value = true
+    setLike(props.isbn13)
+  } else {
+    onLike.value = false
+    removeLike(props.isbn13)
+  }
+}
 </script>
 
 <style scoped lang="scss">

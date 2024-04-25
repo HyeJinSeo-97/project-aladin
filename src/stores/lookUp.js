@@ -14,7 +14,6 @@ const useLookUpStore = defineStore('lookUp', () => {
             type: 'error',
             text: err.errorMessage || err.message
           })
-          console.error('[ getLookUpApi ]', err)
         })
     }
   }

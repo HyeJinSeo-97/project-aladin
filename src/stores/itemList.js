@@ -64,7 +64,6 @@ const useItemListStore = defineStore('itemList', () => {
           type: 'error',
           text: err.errorMessage || err.message
         })
-        console.error('[ getItemListApi ]', err)
       })
   }
 
