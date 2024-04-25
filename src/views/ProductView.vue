@@ -165,7 +165,11 @@
                     <div class="mt-1">
                       <div class="d-flex align-center ga-5">
                         <div>
-                          <v-img src="/images/mobilepop.jpg" alt="모바일팝" width="60" />
+                          <v-img
+                            src="/project-aladin/images/mobilepop.jpg"
+                            alt="모바일팝"
+                            width="60"
+                          />
                         </div>
                         <div>
                           <strong class="d-block">모바일팝 4% 즉시 할인</strong>
@@ -176,7 +180,11 @@
 
                       <div class="d-flex align-center ga-5 mt-1">
                         <div>
-                          <v-img src="/images/93x58_240131.jpg" alt="네이버페이" width="60" />
+                          <v-img
+                            src="/project-aladin/images/93x58_240131.jpg"
+                            alt="네이버페이"
+                            width="60"
+                          />
                         </div>
                         <div>
                           <strong class="d-block">네이버페이 5천 포인트 적립</strong>

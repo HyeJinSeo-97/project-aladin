@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "homepage": "https://hyejinseo-97.github.io/project-aladin/",
   "scripts": {
-    "homepage": "https://hyejinseo-97.github.io/project-aladin/",
     "predeploy": "vite build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
