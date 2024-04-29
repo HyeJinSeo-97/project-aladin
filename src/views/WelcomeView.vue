@@ -263,10 +263,10 @@ import {
 } from '@/config/welcome.js'
 import { ref } from 'vue'
 import SectionC from '@/components/global/SectionC.vue'
-import BookRankC from '@/components/global/BookRankC.vue'
+import BookRankC from '@/components/books/BookRankC.vue'
 import { useItemListStore } from '@/stores/itemList.js'
 import { storeToRefs } from 'pinia'
-import BookIntroC from '@/components/global/BookIntroC.vue'
+import BookIntroC from '@/components/books/BookIntroC.vue'
 import ContainerC from '@/components/ContainerC.vue'
 
 const itemListStore = useItemListStore()

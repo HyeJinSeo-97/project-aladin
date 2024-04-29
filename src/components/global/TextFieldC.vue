@@ -6,9 +6,11 @@
     :hide-details="hideDetails"
     :type="fieldType"
     :rules="rules"
-    :append-inner-icon="appendInnerIcon"
     class="global-text-field"
   >
+    <template v-if="appendInnerIcon" #append-inner>
+      <v-btn size="small" :icon="appendInnerIcon" @click="onSearch"></v-btn>
+    </template>
     <template #message="{ message }">
       <slot name="message" v-bind:message="message"></slot>
     </template>
@@ -40,7 +42,11 @@ defineProps({
     default: () => [value => !!value || '필수 입력 항목입니다.']
   },
   placeholder: String,
-  appendInnerIcon: String
+  appendInnerIcon: String,
+  onSearch: {
+    type: Function,
+    default: () => {}
+  }
 })
 </script>
 

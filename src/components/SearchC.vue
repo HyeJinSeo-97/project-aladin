@@ -1,6 +1,12 @@
 <template>
   <v-sheet position="relative">
-    <text-field-c placeholder="도서 검색" append-inner-icon="mdi-magnify">
+    <text-field-c
+      v-model.trim="search"
+      placeholder="도서 검색"
+      append-inner-icon="mdi-magnify"
+      :on-search="onSearchHandler"
+      @keyup.enter="onSearchHandler"
+    >
       <v-overlay
         :scrim="false"
         offset="10"
@@ -30,6 +36,40 @@
 
 <script setup>
 import TextFieldC from '@/components/global/TextFieldC.vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+// DATA --------------------------------------------------------
+const search = ref('')
+const route = useRoute()
+const router = useRouter()
+const { query } = route
+
+// CREATED --------------------------------------------------------
+const init = () => {
+  if (query.word) {
+    search.value = query.word
+  }
+}
+init()
+
+// WATCH --------------------------------------------------------
+watch(
+  () => route.query,
+  newQuery => {
+    search.value = newQuery.word || ''
+  }
+)
+
+// METHODS --------------------------------------------------------
+const onSearchHandler = async () => {
+  if (search.value === '' || search.value === undefined || search.value === null) return
+
+  router.push({
+    name: 'SearchResult',
+    query: { word: search.value }
+  })
+}
 </script>
 
 <style lang="scss">

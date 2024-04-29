@@ -1,6 +1,6 @@
 const PRIVATE_KEY = 'ttbshyejin97971052001'
 const APIS = {
-  SEARCH: '/api/ItemSearch.aspx',
+  SEARCH: '/api/search',
   ITEM_LIST: '/api/itemList',
   LOOK_UP: '/api/lookUp'
 }

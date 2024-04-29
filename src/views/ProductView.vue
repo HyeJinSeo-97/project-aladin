@@ -68,9 +68,9 @@
                 <td class="text-left">
                   <div>{{ product.priceStandard.toLocaleString('ko-KR') }}</div>
                   <div>
-                    <span class="font-weight-bold mr-1" style="font-size: 1.25rem">{{
-                      product.priceSales.toLocaleString('ko-KR')
-                    }}</span>
+                    <span class="font-weight-bold mr-1" style="font-size: 1.25rem">
+                      {{ product.priceSales.toLocaleString('ko-KR') }}
+                    </span>
                     <span class="text-grey-darken-2" style="font-size: 1rem">
                       ( {{ 100 - (product.priceSales / product.priceStandard) * 100 }}% 할인 )
                     </span>
