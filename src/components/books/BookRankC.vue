@@ -22,7 +22,11 @@
     </v-sheet>
 
     <v-sheet class="book-desc">
-      <router-link to="" class="custom-router-link">
+      <router-link
+        to=""
+        class="custom-router-link"
+        @click="useRouterLink('Product', { isbn13: book.isbn13 })"
+      >
         <p
           class="book-title text-left text-break"
           :class="{ 'text-center': vertical }"
