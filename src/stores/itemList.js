@@ -52,22 +52,33 @@ const useItemListStore = defineStore('itemList', () => {
     }
   })
 
-  const getItemList = (type, params) => {
-    return getItemListApi(params)
-      .then(res => {
-        if (type) itemTypes[type] = res
-
-        return res
-      })
-      .catch(err => {
-        swal.notice({
-          type: 'error',
-          text: err.errorMessage || err.message
+  const apiActions = {
+    getItemListWithKey: (key, queryType, params) => {
+      return getItemListApi(queryType, params)
+        .then(res => {
+          itemTypes[key] = res
+          return { ...res, listKey: key }
         })
-      })
+        .catch(err => {
+          swal.notice({
+            type: 'error',
+            text: err.errorMessage || err.message
+          })
+        })
+    },
+    getItemList: (queryType, params) => {
+      return getItemListApi(queryType, params)
+        .then(res => res)
+        .catch(err => {
+          swal.notice({
+            type: 'error',
+            text: err.errorMessage || err.message
+          })
+        })
+    }
   }
 
-  return { itemTypes, getItemList }
+  return { itemTypes, apiActions }
 })
 
 export { useItemListStore }

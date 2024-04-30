@@ -1,11 +1,11 @@
 <template>
-  <container-c>
+  <container-c :overlay="onLoading">
     <v-sheet rounded="lg" class="d-flex flex-column ga-10">
       <!-- 메인 배너 -->
       <v-sheet class="my-border">
         <carousel-c
           min-height="45vh"
-          :auto-play="3000"
+          :auto-play="0"
           :current-slide="currentSlide"
           :items-to-show="1"
           :slides="MAIN_BANNERS"
@@ -269,15 +269,17 @@ import { storeToRefs } from 'pinia'
 import BookIntroC from '@/components/books/BookIntroC.vue'
 import ContainerC from '@/components/ContainerC.vue'
 
+// DATA ---------------------------------------------------------------
 const itemListStore = useItemListStore()
 const { itemTypes } = storeToRefs(itemListStore)
-const { getItemList } = itemListStore
+const { apiActions } = itemListStore
 const currentSlide = ref(0)
 const activeTab = ref(MAIN_TABS[0].key)
 const yesterdayBestSeller = ref(undefined)
 const bestDVD = ref(undefined)
+const onLoading = ref(false)
 
-// CREATED
+// CREATED ---------------------------------------------------------------
 const makeParams = ({
   QueryType = '',
   CategoryId = '0',
@@ -303,74 +305,35 @@ const makeParams = ({
 }
 
 const init = async () => {
-  // 메인 Carousel
-  await Promise.all([
-    getItemList('editor_choice', makeParams({ QueryType: 'ItemEditorChoice', CategoryId: '1' })),
-    getItemList(
-      'week',
-      makeParams({
-        QueryType: 'Bestseller'
-      })
-    ),
-    getItemList(
-      'new_book',
-      makeParams({
-        QueryType: 'ItemNewAll'
-      })
-    ),
-    getItemList(
-      'blog',
-      makeParams({
-        QueryType: 'BlogBest'
-      })
-    ),
-    getItemList(
-      'standout',
-      makeParams({
-        QueryType: 'ItemNewSpecial'
-      })
-    ),
-    getItemList(
-      'ebook',
-      makeParams({
-        QueryType: 'ItemNewSpecial',
-        SearchTarget: 'eBook'
-      })
-    ),
-    getItemList(
-      'foreign',
-      makeParams({
-        QueryType: 'ItemNewAll',
-        SearchTarget: 'Foreign'
-      })
-    )
+  onLoading.value = true
+
+  Promise.all([
+    apiActions.getItemListWithKey('editor_choice', 'itemEditorChoice', { CategoryId: 1 }),
+    apiActions.getItemListWithKey('week', 'bestseller'),
+    apiActions.getItemListWithKey('new_book', 'itemNewAll'),
+    apiActions.getItemListWithKey('blog', 'blogBest'),
+    apiActions.getItemListWithKey('standout', 'itemNewSpecial'),
+    apiActions.getItemListWithKey('ebook', 'itemNewSpecial', { SearchTarget: 'eBook' }),
+    apiActions.getItemListWithKey('foreign', 'itemNewAll', { SearchTarget: 'Foreign' })
   ])
 
   // 어제 베스트셀러 TOP 10
-  yesterdayBestSeller.value = await getItemList(
-    undefined,
-    makeParams({
-      QueryType: 'Bestseller',
-      SearchTarget: 'eBook',
-      CategoryId: '1',
-      Cover: 'MidBig'
-    })
-  )
+  yesterdayBestSeller.value = await apiActions.getItemList('Bestseller', {
+    SearchTarget: 'eBook',
+    CategoryId: '1',
+    Cover: 'MidBig'
+  })
 
   // 이달의 베스트 DVD
-  bestDVD.value = await getItemList(
-    undefined,
-    makeParams({
-      QueryType: 'Bestseller',
-      SearchTarget: 'DVD',
-      Cover: 'Big'
-    })
-  )
+  bestDVD.value = await apiActions.getItemList('Bestseller', {
+    SearchTarget: 'DVD',
+    Cover: 'Big'
+  })
 }
 
-init()
+init().then(() => (onLoading.value = false))
 
-// METHODS
+// METHODS ---------------------------------------------------------------
 const onSlideHandler = $event => {
   const { slidingToIndex, currentSlideIndex, slidesCount } = $event
 
