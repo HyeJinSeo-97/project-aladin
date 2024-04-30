@@ -1,7 +1,6 @@
 const PRIVATE_KEY = 'ttbshyejin97971052001'
 const APIS = {
-  SEARCH: '/api/search',
-  LOOK_UP: '/api/lookUp'
+  SEARCH: '/api/search'
 }
 const OUTPUT = 'JS'
 const VERSION = 20131101

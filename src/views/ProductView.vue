@@ -72,7 +72,7 @@
                       {{ product.priceSales.toLocaleString('ko-KR') }}
                     </span>
                     <span class="text-grey-darken-2" style="font-size: 1rem">
-                      ( {{ 100 - (product.priceSales / product.priceStandard) * 100 }}% 할인 )
+                      ( {{ getDiscountRate(product.priceSales, product.priceStandard) }}% 할인 )
                     </span>
                   </div>
                 </td>
@@ -99,24 +99,7 @@
               <tr>
                 <th>평점</th>
                 <td>
-                  <div>
-                    <template v-if="product.customerReviewRank < 1">
-                      <v-icon v-for="n in 5" :key="n" icon="mdi-star-outline" />
-                      <span class="font-weight-bold text-red-darken-3">
-                        ( {{ product.customerReviewRank.toFixed(1) }} )
-                      </span>
-                    </template>
-
-                    <template v-else>
-                      <template v-for="n in Math.floor(product.customerReviewRank)" :key="n">
-                        <v-icon v-if="n % 2 === 0" icon="mdi-star" />
-                      </template>
-                      <v-icon v-if="product.customerReviewRank % 2 >= 1" icon="mdi-star-half" />
-                      <span class="font-weight-bold text-red-darken-3">
-                        ( {{ product.customerReviewRank.toFixed(1) }} )
-                      </span>
-                    </template>
-                  </div>
+                  <book-review-c :customer-review-rank="product.customerReviewRank" />
 
                   <div class="d-flex align-center">
                     <v-btn variant="plain" class="pa-0" size="small">100자평(0)</v-btn>
@@ -227,6 +210,8 @@ import { ref } from 'vue'
 import { useLookUpStore } from '@/stores/lookUp.js'
 import TextFieldC from '@/components/global/TextFieldC.vue'
 import { getLike, removeLike, setLike } from '@/utils/product.js'
+import BookReviewC from '@/components/books/components/BookReviewC.vue'
+import { getDiscountRate } from '../utils/book.js'
 
 // -----------------------------------------------------------
 const RADIOS = [
@@ -238,13 +223,14 @@ const RADIOS = [
 
 // DATA
 const lookUpStore = useLookUpStore()
-const { actions } = lookUpStore
+const { apiActions } = lookUpStore
 const product = ref(undefined)
 const showReview = ref(false)
 const rating = ref(5) // 리뷰 별점
 const bookCount = ref(1) // 수량
 const reviewRadio = ref(undefined)
 const onLike = ref(false) // 좋아요 유무
+const onLoading = ref(false)
 
 // PROPS
 const props = defineProps({
@@ -253,13 +239,10 @@ const props = defineProps({
 
 // CREATED
 const init = async () => {
+  onLoading.value = true
+
   // 상품 조회
-  const params = {
-    itemIdType: 'ISBN',
-    ItemId: props.isbn13,
-    Cover: 'Big'
-  }
-  product.value = await actions.getLookUp(params)
+  product.value = await apiActions.getLookUp({ ItemId: props.isbn13 })
 
   // 해당 도서에 좋아요 적용 유무
   const likes = getLike()
@@ -268,7 +251,9 @@ const init = async () => {
   if (targetLike > -1) onLike.value = true
 }
 
-init()
+init().then(() => {
+  onLoading.value = false
+})
 
 // METHODS
 const onClickLike = () => {

@@ -3,7 +3,7 @@ import { getLookUpApi } from '@/module/lookUp.js'
 import swal from '@/plugins/swal.js'
 
 const useLookUpStore = defineStore('lookUp', () => {
-  const actions = {
+  const apiActions = {
     getLookUp: params => {
       return getLookUpApi(params)
         .then(res => {
@@ -18,7 +18,7 @@ const useLookUpStore = defineStore('lookUp', () => {
     }
   }
 
-  return { actions }
+  return { apiActions }
 })
 
 export { useLookUpStore }
