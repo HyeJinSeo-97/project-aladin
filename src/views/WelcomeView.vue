@@ -293,12 +293,12 @@ const initApis = [
 const init = async () => {
   onLoading.value = true
 
-  // for (let i = 0; i < initApis.length; i++) {
-  //   apiActions
-  //     .getItemListWithKey(initApis[i].key, initApis[i].queryType, initApis[i].params)
-  //     .then(() => {})
-  //     .catch(() => {})
-  // }
+  for (let i = 0; i < initApis.length; i++) {
+    apiActions
+      .getItemListWithKey(initApis[i].key, initApis[i].queryType, initApis[i].params)
+      .then(() => {})
+      .catch(() => {})
+  }
 
   // 어제 베스트셀러 TOP 10
   yesterdayBestSeller.value = await apiActions.getItemList('Bestseller', {
