@@ -280,42 +280,25 @@ const bestDVD = ref(undefined)
 const onLoading = ref(false)
 
 // CREATED ---------------------------------------------------------------
-const makeParams = ({
-  QueryType = '',
-  CategoryId = '0',
-  SearchTarget = 'Book',
-  Year = null,
-  Month = null,
-  Week = null,
-  MaxResults = 10,
-  Start = 1,
-  Cover = 'Big'
-}) => {
-  return {
-    QueryType,
-    CategoryId,
-    SearchTarget,
-    Year,
-    Month,
-    Week,
-    MaxResults,
-    Start,
-    Cover
-  }
-}
+const initApis = [
+  { key: 'editor_choice', queryType: 'itemEditorChoice', params: { CategoryId: 1 } },
+  { key: 'week', queryType: 'bestseller' },
+  { key: 'new_book', queryType: 'itemNewAll' },
+  { key: 'blog', queryType: 'blogBest' },
+  { key: 'standout', queryType: 'itemNewSpecial' },
+  { key: 'ebook', queryType: 'itemNewSpecial', params: { SearchTarget: 'eBook' } },
+  { key: 'foreign', queryType: 'itemNewAll', params: { SearchTarget: 'Foreign' } }
+]
 
 const init = async () => {
   onLoading.value = true
 
-  Promise.all([
-    apiActions.getItemListWithKey('editor_choice', 'itemEditorChoice', { CategoryId: 1 }),
-    apiActions.getItemListWithKey('week', 'bestseller'),
-    apiActions.getItemListWithKey('new_book', 'itemNewAll'),
-    apiActions.getItemListWithKey('blog', 'blogBest'),
-    apiActions.getItemListWithKey('standout', 'itemNewSpecial'),
-    apiActions.getItemListWithKey('ebook', 'itemNewSpecial', { SearchTarget: 'eBook' }),
-    apiActions.getItemListWithKey('foreign', 'itemNewAll', { SearchTarget: 'Foreign' })
-  ])
+  for (let i = 0; i < initApis.length; i++) {
+    apiActions
+      .getItemListWithKey(initApis[i].key, initApis[i].queryType, initApis[i].params)
+      .then(() => {})
+      .catch(() => {})
+  }
 
   // 어제 베스트셀러 TOP 10
   yesterdayBestSeller.value = await apiActions.getItemList('Bestseller', {
