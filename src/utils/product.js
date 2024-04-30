@@ -21,3 +21,20 @@ export const removeLike = bookIsbn => {
   likes.splice(targetBookIndex, 1)
   sessionStorage.setItem(LIKE_KEY, JSON.stringify(likes))
 }
+
+const SEARCH_KEY = 'search'
+
+export const setSearchBook = title => {
+  const books = getSearchBooks()
+  books.push(title)
+  sessionStorage.setItem(SEARCH_KEY, JSON.stringify(books))
+}
+
+export const getSearchBooks = () => {
+  const books = sessionStorage.getItem(SEARCH_KEY)
+  return books ? JSON.parse(sessionStorage.getItem(SEARCH_KEY)) : []
+}
+
+export const allRemoveBook = () => {
+  sessionStorage.setItem(SEARCH_KEY, JSON.stringify([]))
+}

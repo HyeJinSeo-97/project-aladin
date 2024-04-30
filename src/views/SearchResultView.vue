@@ -106,8 +106,7 @@ const searchWord = computed(() => {
 // WATCH --------------------------------------------------------
 watch(
   () => route.query.word,
-  newWord => {
-    console.log('[WATCH]', newWord)
+  () => {
     init()
   }
 )

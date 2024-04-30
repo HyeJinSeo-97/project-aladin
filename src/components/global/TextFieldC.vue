@@ -8,12 +8,14 @@
     :rules="rules"
     class="global-text-field"
   >
-    <template v-if="appendInnerIcon" #append-inner>
-      <v-btn size="small" :icon="appendInnerIcon" @click="onSearch"></v-btn>
-    </template>
+    <!--    <template v-if="appendInnerIcon" #append-inner>-->
+    <!--      <v-btn size="small" :icon="appendInnerIcon" @click="onSearch"></v-btn>-->
+    <!--    </template>-->
     <template #message="{ message }">
       <slot name="message" v-bind:message="message"></slot>
     </template>
+
+    <slot name="overlay"></slot>
   </v-text-field>
 </template>
 
