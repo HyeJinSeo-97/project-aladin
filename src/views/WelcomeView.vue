@@ -5,7 +5,7 @@
       <v-sheet class="my-border">
         <carousel-c
           min-height="45vh"
-          :auto-play="0"
+          :auto-play="3000"
           :current-slide="currentSlide"
           :items-to-show="1"
           :slides="MAIN_BANNERS"

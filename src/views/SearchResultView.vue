@@ -1,5 +1,5 @@
 <template>
-  <container-c :overlay="isLoading">
+  <container-c :overlay="onLoading">
     <v-card>
       <v-card-title class="text-left">
         <span class="font-weight-bold font-size-1">&lsquo;{{ searchWord }}&rsquo; 검색 결과</span>
@@ -59,8 +59,8 @@ import BookSearchC from '@/components/books/BookSearchC.vue'
 // DATA --------------------------------------------------------
 const route = useRoute()
 const searchStore = useSearchStore()
-const { actions } = searchStore
-const isLoading = ref(false)
+const { apiActions } = searchStore
+const onLoading = ref(false)
 const result = reactive({
   All: undefined,
   Book: undefined,
@@ -78,20 +78,20 @@ const init = () => {
     return
   }
 
-  isLoading.value = true
+  onLoading.value = true
 
   const params = { Query: route.query.word }
-  actions
+  apiActions
     .getSearchItem(params)
     .then(res => {
       console.log('[ INIT - res ]', res)
       if (res.length > 0) {
         res.forEach(el => {
-          result[el.apiType] = el
+          result[el.searchTarget] = el
         })
       }
 
-      isLoading.value = false
+      onLoading.value = false
     })
     .catch(() => {})
 }

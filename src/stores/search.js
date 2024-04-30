@@ -3,7 +3,7 @@ import { getSearchItemApi } from '@/module/search.js'
 import swal from '@/plugins/swal.js'
 
 const useSearchStore = defineStore('search', () => {
-  const actions = {
+  const apiActions = {
     getSearchItem: params => {
       return getSearchItemApi(params)
         .then(res => {
@@ -18,7 +18,7 @@ const useSearchStore = defineStore('search', () => {
     }
   }
 
-  return { actions }
+  return { apiActions }
 })
 
 export { useSearchStore }
